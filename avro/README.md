@@ -32,9 +32,7 @@ Execute the code to see the output.
 Python
 --------
 
-If you have `pip`, use the below command to install Avro.  If you don't, then you can follow the instructions on Apache's website for downloading and installing the Avro module for Python.
-
-Or just download `pip` cause it's awesome.
+If you have `pip`, use the below command to install Avro.  If you don't, you should go [get pip](https://pip.pypa.io/en/stable/installing/) because it is awesome.
 
 `$ sudo pip install avro`
 
@@ -43,4 +41,3 @@ You can now view and execute `demo.py` to view the output.
 `$ python demo.py`
 
 Note that there is no support for code generation with Python.
-
