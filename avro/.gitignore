@@ -3,4 +3,7 @@
 **/.project
 **/.settings
 **/target/
-
+avro-tools*.jar
+example/
+**users.avro
+**dependency-reduced-pom.xml
