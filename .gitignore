@@ -1,0 +1,15 @@
+# Eclipse stuff
+**/.classpath
+**/.project
+**/.settings
+.metadata
+.recommenders
+
+# Maven stuff
+**/target/
+**dependency-reduced-pom.xml
+
+# Avro
+avro/avro-tools*.jar
+avro/**/example/
+**users.avro
