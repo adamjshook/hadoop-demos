@@ -56,18 +56,20 @@ public class Driver
 
 	private static void produceMessages(Properties props, String topic)
 	{
+		System.out.print("Producing messages...");
 		Producer<String, String> producer = new KafkaProducer<>(props);
 		for (int i = 0; i < 100; i++) {
 			producer.send(new ProducerRecord<String, String>(topic, Integer.toString(i), Integer.toString(i)));
 		}
 		producer.close();
+		System.out.println(" Done.");
 	}
 
 	private static void consumeMessages(Properties props, String topic)
 	{
 		KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
 		consumer.subscribe(Arrays.asList(topic));
-		consumer.seekToBeginning();
+		System.out.println("Consumer started... Ctrl+C to quit");
 		boolean consume = true;
 		while (consume) {
 			ConsumerRecords<String, String> records = consumer.poll(100);
