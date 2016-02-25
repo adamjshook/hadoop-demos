@@ -38,6 +38,31 @@ class LolMatchData(rpyc.Service):
             avroObject["participants"] = []
             avroObject["teams"] = []
 
+            for pData in data["participants"]:
+                p = { }
+                p["championId"] = pData["championId"]
+                p["teamId"] = pData["teamId"]
+                p["winner"] = pData["teamId"] == avroObject["winningTeam"]
+
+                pId = pData["participantId"]
+                for pIdData in data["participantIdentities"]:
+                    if pIdData["participantId"] == pId:
+                        p["summonerId"] = pIdData["player"]["summonerId"]
+                        p["summonerName"] = pIdData["player"]["summonerName"]
+                        break
+
+                avroObject["participants"].append(p)
+
+            for tData in data["teams"]:
+                t = { }
+                t["teamId"] = tData["teamId"]
+                t["winner"] = tData["winner"]
+                t["firstInhibitor"] = tData["firstInhibitor"]
+                t["firstBlood"] = tData["firstBlood"]
+                t["firstTower"] = tData["firstTower"]
+
+                avroObject["teams"].append(t)
+
             stream = StringIO()
             writer = DatumWriter(writers_schema=schema)
             encoder = BinaryEncoder(stream)
@@ -52,6 +77,8 @@ class LolMatchData(rpyc.Service):
         except ValueError as e:
             print e
         except TypeError as e:
+            print e
+        except KeyError as e:
             print e
         except:
             print str(sys.exc_info()[0])
