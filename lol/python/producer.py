@@ -14,7 +14,7 @@ def __init_logging():
 class LolMatchData(rpyc.Service):
     def exposed_match(self, dataStr):
         data = json.loads(dataStr)
-        print json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '))
+        print json.dumps(data, indent=4, separators=(',', ': '))
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
