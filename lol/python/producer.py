@@ -5,10 +5,10 @@ import json
 import logging
 from StringIO import StringIO
 import avro.schema
-from avro.datafile import DataFileWriter
 from avro.io import DatumWriter
 from avro.io import AvroTypeException
 from kafka import KafkaProducer
+from avro.io import BinaryEncoder
 
 schema = avro.schema.parse(open("match.avsc").read())
 
@@ -39,18 +39,20 @@ class LolMatchData(rpyc.Service):
             avroObject["participants"] = []
             avroObject["teams"] = []
 
-            print "Writing Avro object..."
             stream = StringIO()
-            writer = DataFileWriter(stream, DatumWriter(), schema)
-            writer.append(avroObject)
-            writer.flush()
+            writer = DatumWriter(writers_schema=schema)
+            encoder = BinaryEncoder(stream)
+            print "Writing Avro object..."
+            writer.write(avroObject, encoder)
             print "Data is: %s" % stream.getvalue()
             self._producer.send(self._topic, stream.getvalue())
             self._producer.flush()
-            writer.close()
+            print "Kafka message sent"
         except AvroTypeException as e:
             print e
         except ValueError as e:
+            print e
+        except TypeError as e:
             print e
         except:
             print str(sys.exc_info()[0])
