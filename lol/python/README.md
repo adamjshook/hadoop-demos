@@ -63,7 +63,7 @@ There are three files for ingesting data in Avro.
 
 First, create the Kafka topic for posting messages, using your ZooKeeper and Kafka configuration
 
-```bash
+```
 $ kafka-topics.sh --zookeeper localhost:2181 --create \
     --topic lol --partitions 1 --replication-factor 1
 Created topic "lol".
@@ -71,7 +71,7 @@ Created topic "lol".
 
 Then, start the rpyc server/Kafka producer:
 
-```bash
+```
 $ python producer.py 
 usage: python producer.py <server.port> <brokers> <topic>
     server.port - port to bind to for rpyc calls
@@ -84,7 +84,7 @@ $ python producer.py 44444 localhost:9092 lol
 
 In a separate terminal, start the Kafka consumer:
 
-```bash
+```
 $ python consumer.py
 usage: python consumer.py <brokers> <topic> <output> <messages.per.file>
     brokers - comma-delimited list of host:port pairs for Kafka brokers
@@ -96,14 +96,14 @@ $ python consumer.py localhost:9092 lol /in/lol 10
 
 In a third terminal, create a local file containing your API key:
 
-```bash
+```
 $ cat api.key
 <key omitted>
 ```
 
 Start the `post_match` process to create the JSON stream.
 
-```bash
+```
 $ python post_match.py 
 usage: python post_match.py <rpyc.server> <api.key.file>
     rpyc.server - host:port for sending rpyc calls
@@ -113,7 +113,7 @@ $ python post_match.py localhost:44444 api.key
 
 Both the producer and consumer will log messages as they are produced/consumed.  After 10 messages are consumed, they will be written to a file in HDFS under the directory you specified.
 
-```bash
+```
 $ hdfs dfs -ls -R /in/
 drwxr-xr-x   - adamjshook supergroup          0 2016-02-25 15:59 /in/lol
 drwxr-xr-x   - adamjshook supergroup          0 2016-02-25 15:59 /in/lol/2016
@@ -130,7 +130,7 @@ drwxr-xr-x   - adamjshook supergroup          0 2016-02-25 16:01 /in/lol/2016/02
 
 You can download one of these files and view the contents using the Avro tools jar file.
 
-```bash
+```
 $ hdfs dfs -get /in/lol/2016/02/25/21/data-1456452042.avro
 $ java -jar /opt/avro/avro-tools-1.8.0.jar tojson data-1456452042.avro
 {"lol.Match":{"mapId":1,"matchCreation":1366716629,"matchDuration":1638,"matchId":1366716629,"matchMode":"CLASSIC","winningTeam":100,"participants":[],"teams":[]}}
