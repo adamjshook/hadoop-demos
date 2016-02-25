@@ -15,11 +15,11 @@ rdr = DatumReader(writers_schema=schema)
 
 
 def __move_to_hdfs(src, dest):
-    """Moves the given src file to the destination path in HDFS
+    """
+    Moves the given src file to the destination path in HDFS
 
-    Args:
-        src (str): The local file to be moved
-        dest (str): The destination file, an HDFS path
+    :param src: The local file to be moved
+    :param dest: The destination file, an HDFS path
     """
     (dir, file) = dest
     print "Moving %s to %s" % (src, "%s/%s" % (dir, file))
@@ -28,43 +28,43 @@ def __move_to_hdfs(src, dest):
 
 
 def __dest_filename(outputDir):
-    """Create a formatted output file name based on the current time
+    """
+    Create a formatted output file name based on the current time
 
-    Args:
-        outputDir (str): The root output directory of HDFS
+    :param outputDir: The root output directory of HDFS
     """
     return ("%s/%s" % (outputDir, strftime("%Y/%m/%d/%H", gmtime())), strftime("data-%s.avro", gmtime()))
 
 
 def __new_writer():
-    """Creates a new DataFileWriter at a temporary location
+    """
+    Creates a new DataFileWriter at a temporary location
 
-    Returns:
-        (DataFileWriter, str): The writer and the filename for where the data is being written
-     """
+    :return: (DataFileWriter, str): The writer and the filename for where the data is being written
+    """
     file = NamedTemporaryFile(delete=False)
     return (DataFileWriter(file, DatumWriter(), schema), file.name)
 
 
 def __decode(msg):
-    """Decodes the given binary Avro message, returning the Avro object as a dict
+    """
+    Decodes the given binary Avro message, returning the Avro object as a dict
 
-    Args:
-        msg (str): The binary Avro message to decode
+    :param msg: The binary Avro message to decode
     """
     encoder = BinaryDecoder(StringIO(msg))
     return rdr.read(encoder)
 
 
 def __consume(brokers, outputDir, messagesPerFile):
-    """Continuously consumes messages from the Kafka broker, appending them to a temporary file until
+    """
+    Continuously consumes messages from the Kafka broker, appending them to a temporary file until
      messagesPerFile have been appended.  The file is then rolled over, being written to HDFS
      under the output directory at outputDir/YYYY/mm/dd/HH/data-%s.avro
 
-    Args:
-        brokers (str): Comma-delimited list of Kafka brokers
-        outputDir (str): The HDFS root directory to put data files
-        messagesPerFile (int): The number of messages to write per file
+    :param brokers: Comma-delimited list of Kafka brokers
+    :param outputDir: The HDFS root directory to put data files
+    :param messagesPerFile: The number of messages to write per file
     """
     # Create the KafkaConsumer
     consumer = KafkaConsumer(topic, bootstrap_servers=brokers)
