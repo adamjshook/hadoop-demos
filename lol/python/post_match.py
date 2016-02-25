@@ -4,6 +4,7 @@ import redis
 import rpyc
 import sys
 import logging
+from time import sleep
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
@@ -98,4 +99,6 @@ if __name__ == "__main__":
     apiKey = open(sys.argv[2], 'r').read()
 
     c = __connect(server)
-    c.root.match(__get_new_match_data(apiKey))
+    while True:
+        c.root.match(__get_new_match_data(apiKey))
+        sleep(1)
