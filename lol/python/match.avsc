@@ -35,12 +35,13 @@
         { "name" : "mapId", "type" : "int" },
         { "name" : "matchCreation", "type" : "int" },
         { "name" : "matchDuration", "type" : "int" },
-        { "name" : "matchMode", "type" : "int" },
+        { "name" : "matchId", "type" : "int" },
+        { "name" : "matchMode", "type" : "string" },
+        { "name" : "winningTeam", "type" : "int" },
         { "name" : "participants", "type" : {
                                                 "type" : "array", "items" : "Participant" } },
         { "name" : "teams", "type" : {
-                                                "type" : "array", "items" : "Team" } },
-        { "name" : "winningTeam", "type" : "int" }
+                                                "type" : "array", "items" : "Team" } }
     ]
 }
 ]
