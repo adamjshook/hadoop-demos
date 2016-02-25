@@ -97,8 +97,8 @@ $ python consumer.py localhost:9092 lol /in/lol 10
 In a third terminal, create a local file containing your API key:
 
 ```
-$ cat api.key
-<key omitted>
+$ cat api.key # a bunch of x's here cuz security
+xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
 Start the `post_match` process to create the JSON stream.
