@@ -29,7 +29,7 @@ def __decode(msg):
     encoder = BinaryDecoder(StringIO(msg))
     return rdr.read(encoder)
 
-def __consume(consumer, outputDir, messagesPerFile=10):
+def __consume(consumer, outputDir, messagesPerFile):
     numMessages = 0
     (writer, filename) = __new_writer()
     for msg in consumer:
@@ -47,14 +47,19 @@ def __consume(consumer, outputDir, messagesPerFile=10):
             numMessages = 0
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print "usage: python consumer.py <brokers> <topic> <output> <messages.per.file>"
+        print "    brokers - comma-delimited list of host:port pairs for Kafka brokers"
+        print "    topic - Kafka topic to post messages to, must exist"
+        print "    output - Absolute HDFS directory to write files to, e.g. /in/lol"
+        print "    messages.per.file - Number of messages to write to a single file before rolling over"
         sys.exit(1)
 
     brokers = sys.argv[1]
     topic = sys.argv[2]
     output = sys.argv[3]
+    messagesPerFile = int(sys.argv[4])
 
     consumer = KafkaConsumer(topic, bootstrap_servers=brokers)
 
-    __consume(consumer, output)
+    __consume(consumer, output, messagesPerFile)
