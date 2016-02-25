@@ -28,7 +28,6 @@ class LolMatchData(rpyc.Service):
         try:
             data = json.loads(dataStr)
 
-            print "Creating Avro object..."
             avroObject = { }
             avroObject["mapId"] = data["mapId"]
             avroObject["matchCreation"] = data["matchId"]
@@ -42,12 +41,12 @@ class LolMatchData(rpyc.Service):
             stream = StringIO()
             writer = DatumWriter(writers_schema=schema)
             encoder = BinaryEncoder(stream)
-            print "Writing Avro object..."
             writer.write(avroObject, encoder)
-            print "Data is: %s" % stream.getvalue()
             self._producer.send(self._topic, stream.getvalue())
             self._producer.flush()
-            print "Kafka message sent"
+
+            print "Wrote %s" % avroObject
+
         except AvroTypeException as e:
             print e
         except ValueError as e:
