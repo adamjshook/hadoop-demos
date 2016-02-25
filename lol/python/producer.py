@@ -59,7 +59,11 @@ class LolMatchData(rpyc.Service):
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print "usage: python producer.py <server.port> <brokers> <topic>"
+        print "    server.port - port to bind to for rpyc calls"
+        print "    brokers - comma-delimited list of host:port pairs for Kafka brokers"
+        print "    topic - Kafka topic to post messages to, must exist"
         sys.exit(1)
+
     __init_logging()
 
     port = int(sys.argv[1])

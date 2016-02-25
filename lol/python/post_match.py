@@ -92,7 +92,9 @@ def __split_hostport(hostnameport):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print "usage: python post_match.py <producer_server> <api_key_file>"
+        print "usage: python post_match.py <rpyc.server> <api.key.file>"
+        print "    rpyc.server - host:port for sending rpyc calls"
+        print "    api.key.file - local file containing your LoL API key"
         sys.exit(1)
 
     server = sys.argv[1]
