@@ -43,7 +43,7 @@ def __get_new_summoner_ids(apiKey):
 
     if r.scard(NEW_SUMMONER_NAMES) > 0:
         name = r.spop(NEW_SUMMONER_NAMES)
-        id = __get_id(name)
+        id = __get_id(name, apiKey)
         r.hset(SUMMONER_NAME_TO_ID, name, id)
         r.sadd(ALL_SUMMONER_IDS, id)
 
@@ -63,7 +63,7 @@ def __get_match(matchId, apiKey):
 
 def __get_new_match_data(apiKey):
     if not r.exists(NEW_MATCH_IDS) or r.scard(NEW_MATCH_IDS) == 0:
-        __get_new_summoner_ids()
+        __get_new_summoner_ids(apiKey)
         randId = r.srandmember(ALL_SUMMONER_IDS)
         __get_new_matches(randId, apiKey)
 
