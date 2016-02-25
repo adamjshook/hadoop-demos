@@ -1,5 +1,5 @@
 import rpyc
-from rpyc.utils.server import ForkingServer
+from rpyc.utils.server import ThreadedServer
 import sys
 import json
 import logging
@@ -8,6 +8,7 @@ import avro.schema
 from avro.datafile import DataFileWriter
 from avro.io import DatumWriter
 from avro.io import AvroTypeException
+from kafka import KafkaProducer
 
 schema = avro.schema.parse(open("match.avsc").read())
 
@@ -19,6 +20,10 @@ def __init_logging():
     root.addHandler(ch)
 
 class LolMatchData(rpyc.Service):
+
+    _topic = None
+    _producer = None
+
     def exposed_match(self, dataStr):
         try:
             data = json.loads(dataStr)
@@ -40,7 +45,8 @@ class LolMatchData(rpyc.Service):
             writer.append(avroObject)
             writer.flush()
             print "Data is: %s" % stream.getvalue()
-            print "Done"
+            self._producer.send(self._topic, stream.getvalue())
+            self._producer.flush()
             writer.close()
         except AvroTypeException as e:
             print e
@@ -50,10 +56,16 @@ class LolMatchData(rpyc.Service):
             print str(sys.exc_info()[0])
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print "usage: python producer.py <port>"
+    if len(sys.argv) != 4:
+        print "usage: python producer.py <server.port> <brokers> <topic>"
         sys.exit(1)
     __init_logging()
 
     port = int(sys.argv[1])
-    ForkingServer(LolMatchData, port=port).start()
+    brokers = sys.argv[2]
+    topic = sys.argv[3]
+
+    LolMatchData._producer = KafkaProducer(bootstrap_servers=brokers)
+    LolMatchData._topic = topic
+
+    ThreadedServer(LolMatchData, port=port).start()
