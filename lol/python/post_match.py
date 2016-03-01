@@ -102,5 +102,13 @@ if __name__ == "__main__":
 
     c = __connect(server)
     while True:
-        c.root.match(__get_new_match_data(apiKey))
-        sleep(1)
+        try:
+            c.root.match(__get_new_match_data(apiKey))
+            sleep(1)
+        except urllib2.HTTPError as e:
+            # Guessing this is a rate limit thing
+            print e
+            sleep(10)
+        except KeyError as e:
+            # Occurs when some stuff is Unicode
+            print e
