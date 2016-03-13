@@ -1,0 +1,129 @@
+62	Wukong	the Monkey King
+24	Jax	Grandmaster at Arms
+35	Shaco	the Demon Jester
+19	Warwick	the Blood Hunter
+76	Nidalee	the Bestial Huntress
+143	Zyra	Rise of the Thorns
+63	Brand	the Burning Vengeance
+33	Rammus	the Armordillo
+420	Illaoi	the Kraken Priestess
+42	Corki	the Daring Bombardier
+201	Braum	the Heart of the Freljord
+34	Anivia	the Cryophoenix
+23	Tryndamere	the Barbarian King
+21	Miss Fortune	the Bounty Hunter
+53	Blitzcrank	the Great Steam Golem
+83	Yorick	the Gravedigger
+101	Xerath	the Magus Ascendant
+15	Sivir	the Battle Mistress
+92	Riven	the Exile
+61	Orianna	the Lady of Clockwork
+41	Gangplank	the Saltwater Scourge
+54	Malphite	Shard of the Monolith
+78	Poppy	Keeper of the Hammer
+30	Karthus	the Deathsinger
+126	Jayce	the Defender of Tomorrow
+20	Nunu	the Yeti Rider
+48	Trundle	the Troll King
+113	Sejuani	the Winter's Wrath
+104	Graves	the Outlaw
+236	Lucian	the Purifier
+150	Gnar	the Missing Link
+99	Lux	the Lady of Luminosity
+102	Shyvana	the Half-Dragon
+58	Renekton	the Butcher of the Sands
+114	Fiora	the Grand Duelist
+222	Jinx	the Loose Cannon
+429	Kalista	the Spear of Vengeance
+105	Fizz	the Tidal Trickster
+38	Kassadin	the Void Walker
+37	Sona	Maven of the Strings
+39	Irelia	the Will of the Blades
+112	Viktor	the Machine Herald
+203	Kindred	The Eternal Hunters
+69	Cassiopeia	the Serpent's Embrace
+57	Maokai	the Twisted Treant
+412	Thresh	the Chain Warden
+10	Kayle	The Judicator
+120	Hecarim	the Shadow of War
+121	Kha'Zix	the Voidreaver
+2	Olaf	the Berserker
+115	Ziggs	the Hexplosives Expert
+134	Syndra	the Dark Sovereign
+36	Dr. Mundo	the Madman of Zaun
+43	Karma	the Enlightened One
+1	Annie	the Dark Child
+84	Akali	the Fist of Shadow
+89	Leona	the Radiant Dawn
+157	Yasuo	the Unforgiven
+85	Kennen	the Heart of the Tempest
+107	Rengar	the Pridestalker
+13	Ryze	the Rogue Mage
+98	Shen	the Eye of Twilight
+154	Zac	the Secret Weapon
+80	Pantheon	the Artisan of War
+50	Swain	the Master Tactician
+432	Bard	the Wandering Caretaker
+14	Sion	The Undead Juggernaut
+67	Vayne	the Night Hunter
+75	Nasus	the Curator of the Sands
+4	Twisted Fate	the Card Master
+31	Cho'Gath	the Terror of the Void
+77	Udyr	the Spirit Walker
+25	Morgana	Fallen Angel
+106	Volibear	the Thunder's Roar
+51	Caitlyn	the Sheriff of Piltover
+122	Darius	the Hand of Noxus
+56	Nocturne	the Eternal Nightmare
+26	Zilean	the Chronokeeper
+268	Azir	the Emperor of the Sands
+68	Rumble	the Mechanized Menace
+72	Skarner	the Crystal Vanguard
+17	Teemo	the Swift Scout
+6	Urgot	the Headsman's Pride
+32	Amumu	the Sad Mummy
+3	Galio	the Sentinel's Sorrow
+74	Heimerdinger	the Revered Inventor
+22	Ashe	the Frost Archer
+161	Vel'Koz	the Eye of the Void
+27	Singed	the Mad Chemist
+110	Varus	the Arrow of Retribution
+29	Twitch	the Plague Rat
+86	Garen	The Might of Demacia
+131	Diana	Scorn of the Moon
+11	Master Yi	the Wuju Bladesman
+60	Elise	the Spider Queen
+12	Alistar	the Minotaur
+55	Katarina	the Sinister Blade
+245	Ekko	the Boy Who Shattered Time
+82	Mordekaiser	the Iron Revenant
+96	Kog'Maw	the Mouth of the Abyss
+266	Aatrox	the Darkin Blade
+119	Draven	the Glorious Executioner
+223	Tahm Kench	the River King
+9	Fiddlesticks	the Harbinger of Doom
+91	Talon	the Blade's Shadow
+5	Xin Zhao	the Seneschal of Demacia
+64	Lee Sin	the Blind Monk
+44	Taric	the Gem Knight
+90	Malzahar	the Prophet of the Void
+127	Lissandra	the Ice Witch
+18	Tristana	the Yordle Gunner
+421	Rek'Sai	the Void Burrower
+8	Vladimir	the Crimson Reaper
+59	Jarvan IV	the Exemplar of Demacia
+267	Nami	the Tidecaller
+202	Jhin	the Virtuoso
+16	Soraka	the Starchild
+45	Veigar	the Tiny Master of Evil
+40	Janna	the Storm's Fury
+111	Nautilus	the Titan of the Depths
+28	Evelynn	the Widowmaker
+79	Gragas	the Rabble Rouser
+238	Zed	the Master of Shadows
+254	Vi	the Piltover Enforcer
+117	Lulu	the Fae Sorceress
+103	Ahri	the Nine-Tailed Fox
+133	Quinn	Demacia's Wings
+7	LeBlanc	the Deceiver
+81	Ezreal	the Prodigal Explorer
