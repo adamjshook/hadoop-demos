@@ -1,8 +1,8 @@
 #!/bin/sh
 
-cd /Users/adamjshook/analytics/topchampions
+cd /home/shadam1/analytics/topchampions
 
-LOG_DIR=/Users/adamjshook/analytics/topchampions/log
+LOG_DIR=/home/shadam1/analytics/topchampions/log
 LOG_FILE=$LOG_DIR/`date +%Y%m%d_%H%M%S`.log
 
 mkdir -p $LOG_DIR
@@ -13,5 +13,5 @@ INPUT=/in/participants/`date -d '1 hour ago' +%Y/%m/%d/%H`
 
 RUN_CMD="/opt/pig/bin/pig -p input=$INPUT -p output=$OUTPUT -f $PIG_SCRIPT"
 echo $RUN_CMD
-#$RUN_CMD &> $LOG_FILE
+$RUN_CMD &> $LOG_FILE
 
