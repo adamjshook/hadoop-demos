@@ -164,6 +164,23 @@ There are seven artifacts all together: sample data files, analytics, and a samp
 * __cronjob.run.sh.template__
   * A sample run script to execute a Pig analytic via cron
 
+#### Execution Modes
+
+Pig has two execution modes, `mapred` (the default) and `local`.  `mapred` uses your Hadoop cluster to execute the job in parallel, while `local` uses your local file system for reading data and writing output.  You should use `local` mode during development, pulling down sample files as needed.  You can specify the mode using the `-x` flag when running `pig`.
+
+To run a script, use the `-f` flag and pass `pig` the filename to execute.  You can use multiple `-p` flags to specify the values of parameters in your script.
+
+```bash
+# Starts a grunt shell using the default mapred mode
+# Identical to "pig -x mapred"
+$ pig
+
+# Starts a grunt shell using the local mode
+$ pig -x local
+
+# Executes a file in local mode with the given input and output properties
+$ pig -x local -p input=localfile.txt -p output=outputdir -f myanalytic.pig
+```
 #### Installation
 
 This will walk through creating a cronjob for scheduling the _Top Champions_ analytic using the provided templates under the `cronjob` directory.
