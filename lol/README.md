@@ -15,6 +15,10 @@ Currently implemented:
     * Receives messages from Kafka topic
     * Batches messages into a temporary file
     * Moves file to HDFS
+  * Pig Analytics
+    * User Information Extraction
+    * Top 10 Champions
+    * Reverse Index
   
 
 Software Requirements
@@ -29,6 +33,7 @@ The following softare products and other items are required.  Acquisition, Insta
 * [kafka-python](https://github.com/dpkp/kafka-python) __must be cloned and installed from Github.__ pip version is out of date
 * [League of Legends API Key](https://developer.riotgames.com/), requires LoL account
 * HDFS Client Machine (`hdfs` command line tool is available and properly configured)
+* [Pig](http://pig.apache.org)
 
 ##Python
 
@@ -59,7 +64,6 @@ There are three files for ingesting data in Avro.
   * Move file to configured HDFS directory
   
 #### Execution
-
 
 First, create the Kafka topic for posting messages, using your ZooKeeper and Kafka configuration
 
@@ -136,4 +140,49 @@ $ java -jar /opt/avro/avro-tools-1.8.0.jar tojson data-1456452042.avro
 {"lol.Match":{"mapId":1,"matchCreation":1366716629,"matchDuration":1638,"matchId":1366716629,"matchMode":"CLASSIC","winningTeam":100,"participants":[],"teams":[]}}
 {"lol.Match":{"mapId":1,"matchCreation":1540888257,"matchDuration":1882,"matchId":1540888257,"matchMode":"CLASSIC","winningTeam":100,"participants":[],"teams":[]}}
 ...
+```
+
+###Part 3 - Pig Analytics
+
+#### Overview
+
+There are seven artifacts all together: sample data files, analytics, and a sample cronjob.
+* __match.avro__
+  * Sample Avro file containing Match data
+* __participants.avro__
+  * Sample Avro file containing Participants data
+* __champs.txt__
+  * Tab-delimited text file containing champion ID, name, and description
+* __user_extract.pig__
+  * Analytic that loads participant data and outputs the user ID, user name, and champion ID for each participant.
+* __topchampions.pig__
+  * Analytic that determines the top 10 most-used champions from the participant data set.  Joins against __champs.txt__ to enrich the output with Champion names.
+* __reverse_index.pig__
+  * Analytic which generates a mapping of summoner ID to match ID, enabling search of all matches for a given user.
+* __cronjob/crontab.template__
+  * A sample crontab for scheduling the run script
+* __cronjob.run.sh.template__
+  * A sample run script to execute a Pig analytic via cron
+
+#### Installation
+
+This will walk through creating a cronjob for scheduling the _Top Champions_ analytic using the provided templates under the `cronjob` directory.
+
+First, create an `analytics` directory in your home directory to install all analytics (we'll just be installing one here -- the other two are an exercise for the reader).  Then, create a `topchampions` directory and copy `topchampions.pig` and `cronjob/run.sh.template` to this directory.
+
+```bash
+$ mkdir -p ~/analytics/topchampions
+$ cp pig/topchampions.pig ~/analytics/topchampions/
+$ cp pig/cronjob/run.sh.template ~/analytics/topchampions/run.sh
+```
+
+Now, edit `~/analytics/topchampions/run.sh` to fit your needs -- update folders to your own Linux username, change input/output paths as necessary, change path to the `pig` executable, etc.
+
+Now, using `cronjob/crontab.template` as a guide, edit your crontab via `crontab -e` (which will open a text editor) and set the trigger time and the script to be executed.  After you edit your crontab, quit the text editor and you'll see that the crontab has been saved.  Use `crontab -l` to list your current crontab.
+
+```bash
+$ crontab -e
+crontab: installing new crontab
+$ crontab -l
+5 * * * * /Users/adamjshook/analytics/topchampions/run.sh
 ```
