@@ -37,4 +37,10 @@ public class GeneratedDataFetcher
 
 		return tb;
 	}
+
+	@Override
+	public List<String> fetchTrendingHashtags()
+	{
+		return faker.lorem().words(10);
+	}
 }

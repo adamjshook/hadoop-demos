@@ -32,21 +32,46 @@ function LookupModel() {
   self.word = ko.observable();
 }
 
+function HashTagModel() {
+  var self = this;
+  self.rows = ko.observableArray();
+  self.load = function (data) {
+    //first clear whats there
+    self.rows.removeAll();
+    for (var i = 0; i < data.length; i++) {
+      var row = new HashTag(data[i]);
+      self.rows.push(row);
+    };
+  };
+};
+
+function HashTag(data) {
+  var self = this;
+  self.tag = data;
+}
+
 function ApplicationModel() {
   var self = this;
   self.metaDataModel = ko.observable(new MetaDataModel());
   self.lookupModel = ko.observable(new LookupModel());
+  self.hashtagModel = ko.observable(new HashTagModel());
+
+  self.hashtags = function () {
+    $.getJSON("/hashtags", function (data) {
+      self.hashtagModel().load(data);
+    });
+    setTimeout(self.hashtags, 5000);
+  }
 
   self.start = function () {
-
+    self.hashtags();
   };
 
   self.lookup = function () {
     var data = "";
-    data += 'word=' + self.lookupModel().word();
-    console.log(data);
     $.getJSON("/lookup?" + data, function (data) {
       self.metaDataModel().load(data);
     });
   };
+
 }

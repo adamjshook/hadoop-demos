@@ -23,12 +23,23 @@ public class MetaDataController
 
 	@RequestMapping(value = "/lookup", method = RequestMethod.GET)
 	@ResponseBody
-	public List<TweetBean> filterData(@RequestParam(value = "word", defaultValue = "") String word)
+	public List<TweetBean> lookup(@RequestParam(value = "word", defaultValue = "") String word)
 			throws ParseException
 	{
 		LOG.info("Looking up tweets containing {}", word);
 		List<TweetBean> tweets = fetcher.fetchTweetsFromIndex(word);
 		LOG.info("Returning {} tweets", tweets.size());
 		return tweets;
+	}
+
+	@RequestMapping(value = "/hashtags", method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> hashtags()
+			throws ParseException
+	{
+		LOG.info("Loading trending hashtags");
+		List<String> hts = fetcher.fetchTrendingHashtags();
+		LOG.info("Returning {} hashtags", hts.size());
+		return hts;
 	}
 }
