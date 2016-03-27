@@ -12,15 +12,15 @@ import java.util.Arrays;
 
 @Component
 public class WebConfig
-        extends WebMvcConfigurerAdapter
+		extends WebMvcConfigurerAdapter
 {
-    @Bean
-    public ViewResolver viewResolver()
-    {
-        ContentNegotiatingViewResolver contentNegotiatingViewResolver =
-                new ContentNegotiatingViewResolver();
-        View jacksonView = new MappingJackson2JsonView();
-        contentNegotiatingViewResolver.setDefaultViews(Arrays.asList(jacksonView));
-        return contentNegotiatingViewResolver;
-    }
+	@Bean
+	public ViewResolver viewResolver()
+	{
+		ContentNegotiatingViewResolver contentNegotiatingViewResolver =
+				new ContentNegotiatingViewResolver();
+		View jacksonView = new MappingJackson2JsonView();
+		contentNegotiatingViewResolver.setDefaultViews(Arrays.asList(jacksonView));
+		return contentNegotiatingViewResolver;
+	}
 }
