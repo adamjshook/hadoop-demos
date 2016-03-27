@@ -43,4 +43,14 @@ public class GeneratedDataFetcher
 	{
 		return faker.lorem().words(10);
 	}
+
+	@Override
+	public List<String> fetchPopularUsers()
+	{
+		List<String> users = new ArrayList<>();
+		for (int i = 0; i < 10; ++i) {
+			users.add(faker.name().name());
+		}
+		return users;
+	}
 }

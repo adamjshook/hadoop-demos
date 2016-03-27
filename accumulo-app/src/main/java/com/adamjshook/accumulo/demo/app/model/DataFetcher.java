@@ -12,4 +12,6 @@ public abstract class DataFetcher
 	public abstract List<TweetBean> fetchTweetsFromIndex(String word);
 
 	public abstract List<String> fetchTrendingHashtags();
+
+	public abstract List<String> fetchPopularUsers();
 }

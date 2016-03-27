@@ -50,11 +50,30 @@ function HashTag(data) {
   self.tag = data;
 }
 
+function UserModel() {
+  var self = this;
+  self.rows = ko.observableArray();
+  self.load = function (data) {
+    //first clear whats there
+    self.rows.removeAll();
+    for (var i = 0; i < data.length; i++) {
+      var row = new User(data[i]);
+      self.rows.push(row);
+    };
+  };
+};
+
+function User(data) {
+  var self = this;
+  self.user = data;
+}
+
 function ApplicationModel() {
   var self = this;
   self.metaDataModel = ko.observable(new MetaDataModel());
   self.lookupModel = ko.observable(new LookupModel());
   self.hashtagModel = ko.observable(new HashTagModel());
+  self.userModel = ko.observable(new UserModel());
 
   self.hashtags = function () {
     $.getJSON("/hashtags", function (data) {
@@ -63,8 +82,16 @@ function ApplicationModel() {
     setTimeout(self.hashtags, 5000);
   }
 
+  self.users = function () {
+    $.getJSON("/users", function (data) {
+      self.userModel().load(data);
+    });
+    setTimeout(self.users, 5000);
+  }
+
   self.start = function () {
     self.hashtags();
+    self.users();
   };
 
   self.lookup = function () {

@@ -42,4 +42,15 @@ public class MetaDataController
 		LOG.info("Returning {} hashtags", hts.size());
 		return hts;
 	}
+
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> users()
+			throws ParseException
+	{
+		LOG.info("Loading popular users");
+		List<String> users = fetcher.fetchPopularUsers();
+		LOG.info("Returning {} users", users.size());
+		return users;
+	}
 }
