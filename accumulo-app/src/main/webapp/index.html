@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Property Data Client</title>
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <link href="css/propertyapp.css" rel="stylesheet">
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+  <div id="heading" align="left">
+    <table>
+      <tr align="left">
+        <td class="logo" align="left"><img src="images/logo.jpg" alt="Logo" width="50%" height="50%" /></td>
+      </tr>
+    </table>
+  </div>
+  <div id="main">
+    <table>
+      <tr>
+        <td valign="top">
+          <form data-bind="action: lookup">
+            <div id="lookup-content">
+              <input type="button" name="submit" id="submit" value="Submit" data-bind="click: lookup">
+              <label for="word">Word</label>
+              <input id="word" data-bind="value: lookupModel().word" />
+            </div>
+          </form>
+        </td>
+        <td valign="top">
+          <div id="main-content">
+            <table class="table table-striped table-hover" id="metadata">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Created</th>
+                  <th>User ID</th>
+                  <th>Tweet</th>
+                </tr>
+              </thead>
+              <tbody data-bind="foreach: metaDataModel().rows">
+                <tr id="row">
+                  <td data-bind="text: id"></td>
+                  <td data-bind="text: created"></td>
+                  <td data-bind="text: userId"></td>
+                  <td data-bind="text: tweet"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 3rd party javascript libraries -->
+  <script src="js/jquery-1.9.1.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/knockout-2.3.0.js"></script>
+
+  <!-- application -->
+  <script src="js/main-client.js"></script>
+  <script type="text/javascript">
+    (function () {
+      var model = new ApplicationModel();
+      ko.applyBindings(model);
+      model.start();
+    })();
+  </script>
+</body>
+
+</html>
