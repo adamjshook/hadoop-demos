@@ -3,10 +3,13 @@ from avro.io import AvroTypeException, BinaryEncoder, DatumWriter
 from kafka import KafkaProducer
 from rpyc.utils.server import ThreadedServer
 from StringIO import StringIO
+from uuid import uuid4
 
 # Parse the Avro schema and create a DatumWriter
-schema = avro.schema.parse(open("match.avsc").read())
-writer = DatumWriter(writers_schema=schema)
+match_schema = avro.schema.parse(open("match.avsc").read())
+match_writer = DatumWriter(writers_schema=match_schema)
+part_schema = avro.schema.parse(open("participant.avsc").read())
+part_writer = DatumWriter(writers_schema=part_schema)
 
 
 def __init_logging():
@@ -22,7 +25,8 @@ def __init_logging():
 class LolMatchData(rpyc.Service):
     """rpyc Service, delivered JSON messages of LoL match data"""
 
-    _topic = None  # The topic to post messages to
+    _match_topic = None  # The topic to post messages to
+    _participant_topic = None  # The topic to post messages to
     _producer = None  # The Kafka producer
 
     def exposed_match(self, dataStr):
@@ -36,58 +40,67 @@ class LolMatchData(rpyc.Service):
             data = json.loads(dataStr)
 
             # Begin construction of Avro object from the JSON data
-            avro_obj = dict()
-            avro_obj["mapId"] = data["mapId"]
-            avro_obj["matchCreation"] = data["matchId"]
-            avro_obj["matchDuration"] = data["matchDuration"]
-            avro_obj["matchId"] = data["matchId"]
-            avro_obj["matchMode"] = data["matchMode"]
-            avro_obj["winningTeam"] = data["teams"][0]["teamId"] if data["teams"][0]["winner"] else data["teams"][1]["teamId"]
-            avro_obj["participants"] = []
-            avro_obj["teams"] = []
+            match_obj = dict()
+            match_obj["mapId"] = data["mapId"]
+            match_obj["matchCreation"] = data["matchId"]
+            match_obj["matchDuration"] = data["matchDuration"]
+            match_obj["matchId"] = data["matchId"]
+            match_obj["matchMode"] = data["matchMode"]
+            match_obj["winningTeam"] = data["teams"][0]["teamId"] if data["teams"][0]["winner"] else data["teams"][1]["teamId"]
+            match_obj["participants"] = []
+
+            firstInhibitor= data["teams"][0]["teamId"] if data["teams"][0]["firstInhibitor"] else data["teams"][1]["teamId"]
+            firstBlood = data["teams"][0]["teamId"] if data["teams"][0]["firstBlood"] else data["teams"][1]["teamId"]
+            firstTower = data["teams"][0]["teamId"] if data["teams"][0]["firstTower"] else data["teams"][1]["teamId"]
 
             # Append a participant for each one in the match JSON data
             for pData in data["participants"]:
-                p = dict()
-                p["championId"] = pData["championId"]
-                p["teamId"] = pData["teamId"]
-                p["winner"] = pData["teamId"] == avro_obj["winningTeam"]
+                part_obj = dict()
+                part_obj["uuid"] = uuid4().hex
+                part_obj["matchId"] = data["matchId"]
+                part_obj["championId"] = pData["championId"]
+                part_obj["teamId"] = pData["teamId"]
+                part_obj["winner"] = pData["teamId"] == match_obj["winningTeam"]
+                part_obj["firstInhibitor"] = pData["teamId"] == firstInhibitor
+                part_obj["firstBlood"] = pData["teamId"] == firstBlood
+                part_obj["firstTower"] = pData["teamId"] == firstTower
 
                 pId = pData["participantId"]
 
                 # Loop through the participantIdentities in the match JSON for the correct summoner ID and name
                 for pIdData in data["participantIdentities"]:
                     if pIdData["participantId"] == pId:
-                        p["summonerId"] = pIdData["player"]["summonerId"]
-                        p["summonerName"] = pIdData["player"]["summonerName"]
+                        part_obj["summonerId"] = pIdData["player"]["summonerId"]
+                        part_obj["summonerName"] = pIdData["player"]["summonerName"]
                         break
 
-                avro_obj["participants"].append(p)
+                match_obj["participants"].append(part_obj["uuid"])
 
-            # Append a participant for each one in the match JSON data
-            for tData in data["teams"]:
-                t = dict()
-                t["teamId"] = tData["teamId"]
-                t["winner"] = tData["winner"]
-                t["firstInhibitor"] = tData["firstInhibitor"]
-                t["firstBlood"] = tData["firstBlood"]
-                t["firstTower"] = tData["firstTower"]
+                # Create a string stream and encoder
+                stream = StringIO()
+                encoder = BinaryEncoder(stream)
 
-                avro_obj["teams"].append(t)
+                # Encode the avro object
+                part_writer.write(part_obj, encoder)
+
+                # Send the encoded data to the producer and flush the message
+                self._producer.send(self._participant_topic, stream.getvalue())
+                self._producer.flush()
+                print "Wrote %s" % part_obj
 
             # Create a string stream and encoder
             stream = StringIO()
             encoder = BinaryEncoder(stream)
 
             # Encode the avro object
-            writer.write(avro_obj, encoder)
+            match_writer.write(match_obj, encoder)
 
             # Send the encoded data to the producer and flush the message
-            self._producer.send(self._topic, stream.getvalue())
+            self._producer.send(self._match_topic, stream.getvalue())
             self._producer.flush()
 
             # Log the object we wrote
-            print "Wrote %s" % avro_obj
+            print "Wrote %s" % match_obj
 
         except AvroTypeException as e:
             print e
@@ -95,20 +108,23 @@ class LolMatchData(rpyc.Service):
             print str(sys.exc_info()[0])
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print "usage: python producer.py <server.port> <brokers> <topic>"
+    if len(sys.argv) != 5:
+        print "usage: python producer.py <server.port> <brokers> <match_topic> <participant_topic>"
         print "    server.port - port to bind to for rpyc calls"
         print "    brokers - comma-delimited list of host:port pairs for Kafka brokers"
-        print "    topic - Kafka topic to post messages to, must exist"
+        print "    match_topic - Kafka topic to post match data to, must exist"
+        print "    participant_topic - Kafka topic to post participant data to, must exist"
         sys.exit(1)
 
     __init_logging()
 
     port = int(sys.argv[1])
     brokers = sys.argv[2]
-    topic = sys.argv[3]
+    match_topic = sys.argv[3]
+    participant_topic = sys.argv[4]
 
     LolMatchData._producer = KafkaProducer(bootstrap_servers=brokers)
-    LolMatchData._topic = topic
+    LolMatchData._match_topic = match_topic
+    LolMatchData._participant_topic = participant_topic
 
     ThreadedServer(LolMatchData, port=port).start()

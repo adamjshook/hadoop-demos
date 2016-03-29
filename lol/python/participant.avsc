@@ -1,0 +1,17 @@
+{
+    "namespace": "lol",
+    "type" : "record",
+    "name" : "Participant",
+    "fields": [
+        { "name" : "uuid", "type" : "string" },
+        { "name" : "matchId", "type" : "int" },
+        { "name" : "championId", "type" : "int" },
+        { "name" : "teamId", "type" : "int" },
+        { "name" : "winner", "type" : "boolean" },
+        { "name" : "summonerId", "type" : "int" },
+        { "name" : "summonerName", "type" : "string" },
+        { "name" : "firstInhibitor", "type" : "boolean" },
+        { "name" : "firstBlood", "type" : "boolean" },
+        { "name" : "firstTower", "type" : "boolean" }
+    ]
+}
