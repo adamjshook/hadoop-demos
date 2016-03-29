@@ -2,6 +2,7 @@
 part = LOAD '$input' USING AvroStorage();
 
 --part: {
+-- uuid: chararray,
 -- matchId: int,
 -- championId: int,
 -- teamId: int,
@@ -16,7 +17,8 @@ part = LOAD '$input' USING AvroStorage();
 champ_groups = GROUP part BY championId;
 --champ_groups: {group: int,part:
 -- {
---  (matchId: int,
+--  (uuid: chararray,
+--  matchId: int,
 --  championId: int,
 --  teamId: int,
 --  winner: boolean,

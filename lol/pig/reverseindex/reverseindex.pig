@@ -9,10 +9,10 @@ DESCRIBE match;
 -- matchId: int,
 -- matchMode: chararray,
 -- winningTeam: int,
--- participants: {(int)}}
+-- participants: {(chararray)}}
 
 part_index = FOREACH match GENERATE
     FLATTEN(participants) AS participant,
     matchId;
 
-STORE grp_index INTO '$output';
+STORE part_index INTO '$output';
