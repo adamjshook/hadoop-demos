@@ -6,10 +6,13 @@
 .recommenders
 
 # Maven stuff
-**/target/
+**target/
 **dependency-reduced-pom.xml
 
 # Avro
 avro/avro-tools*.jar
 avro/**/example/
 **users.avro
+
+# IntelliJ
+**.iml

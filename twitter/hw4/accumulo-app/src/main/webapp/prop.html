@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Property Data Client</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <link href="css/propertyapp.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="skins/tango/skin.css" rel="stylesheet"/>
+</head>
+
+<div id="container">
+    <table>
+        <tr>
+            <td valign="top">
+                <div id="image-content">
+                    <ul id="mycarousel" class="jcarousel-skin-tango">
+                        <!--  images will get added here -->
+                    </ul>
+                </div>
+            </td>
+            <td valign="top">
+                <div id="map-content">
+                    <table class="table" id="sampledata">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div id="map-canvas" style="height: 355px; width: 400px; float: left"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+            <td valign="top" height="350px">
+                <div id="social-content">
+                    <table class="table table-striped" id="trenddata">
+                        <tbody data-bind="foreach: twitterModel().rows">
+                        <tr>
+                            <td data-bind="text: name"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- 3rd party javascript libraries -->
+<script src="js/bootstrap.js"></script>
+<script src="js/knockout-2.3.0.js"></script>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/jquery.jcarousel.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+<!-- application -->
+<script src="js/prop-client.js"></script>
+<script type="text/javascript">
+	(function() {
+		var model = new ApplicationModel();
+		ko.applyBindings(model);
+		//model.start();
+		model.startTwitter();
+		google.maps.event.addDomListener(window, 'load', model.initialize);
+		
+		//for image viewer
+		jQuery(document).ready(function() {
+		    jQuery('#mycarousel').jcarousel({ 
+		    	setupCallback: model.start,
+		    	scroll: 1,
+		    	visible: 1,
+		    	size: getURLParameter('imageCount')
+		    });
+		});
+	})();
+
+</script>
+</html>

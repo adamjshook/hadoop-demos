@@ -1,0 +1,14 @@
+---
+applications:
+- name: property-app
+  memory: 768M
+  instances: 1
+  host: property-app
+  domain: 192.168.1.170.xip.io
+  path: ./target/property-app-client-1.0.0.jar
+  services:
+    hbase-dev:
+      label: p-hd-hbase-cf
+      provider: Pivotal
+      version: '1.0'
+      plan: free

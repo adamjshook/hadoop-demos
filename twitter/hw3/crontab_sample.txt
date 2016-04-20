@@ -1,0 +1,5 @@
+00 * * * * /home/shadam1/analytics/chattyusers/run.sh
+12 * * * * /home/shadam1/analytics/popularusers/run.sh
+24 * * * * /home/shadam1/analytics/tophashtags/run.sh
+36 * * * * /home/shadam1/analytics/tweetindex/run.sh
+48 * * * * /home/shadam1/analytics/userinfo/run.sh
